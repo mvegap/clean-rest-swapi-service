@@ -1,6 +1,10 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as winston from 'winston';
 
+export class SwapiConfig {
+  readonly url: string;
+}
+
 export class AppService {
   static app_title(): string {
     const { APP_NAME } = process.env;
@@ -67,6 +71,13 @@ export class AppService {
       entities: [__dirname + '/domain/*.entity{.ts,.js}'],
       logging: AppService.environment() === 'LOCAL' ? true : false,
       synchronize: AppService.environment() === 'LOCAL' ? true : false,
+    };
+  }
+
+  static swapiConfig(): SwapiConfig {
+    const { SWAPI_BASE_PATH } = process.env;
+    return {
+      url: SWAPI_BASE_PATH || 'https://swapi.dev/api',
     };
   }
 }
